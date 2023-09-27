@@ -11,7 +11,7 @@ create(TableName) ->
         undefined ->
             ets:new(TableName, [public, named_table]);
         _ ->
-            alredy_exist
+            already_exist
     end.
 
 insert(TableName, Key, Value) ->
