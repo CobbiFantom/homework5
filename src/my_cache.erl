@@ -1,6 +1,10 @@
 -module(my_cache).
 
--export([create/1, insert/3, insert/4, lookup/2, delete_obsolete/1]).
+-export([create/1]).
+-export([insert/3]).
+-export([insert/4]).
+-export([lookup/2]).
+-export([delete_obsolete/1]).
 
 create(TableName) ->
     case ets:info(TableName) of
