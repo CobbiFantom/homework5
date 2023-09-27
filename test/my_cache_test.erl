@@ -1,4 +1,4 @@
--module(mycache_test).
+-module(my_cache_test).
 
 -ifdef(TEST).
 
