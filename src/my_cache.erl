@@ -6,6 +6,8 @@
 -export([lookup/2]).
 -export([delete_obsolete/1]).
 
+-include_lib("stdlib/include/ms_transform.hrl").
+
 create(TableName) ->
     case ets:info(TableName) of
         undefined ->
@@ -39,7 +41,7 @@ lookup(TableName, Key) ->
                 [] ->
                     undefined;
                 [{_, Value, Timeout}] ->
-                    case erlang:system_time(seconds) >= Timeout of
+                    case erlang:system_time(seconds)>= Timeout of
                         true ->
                             undefined;
                         false ->
@@ -52,8 +54,9 @@ lookup(TableName, Key) ->
 
 delete_obsolete(TableName) ->
     Now = erlang:system_time(seconds),
+    Select = ets:fun2ms(fun({_, _, Timeout}) when Timeout < Now -> true end),
     try
-        ets:select_delete(TableName,[{{'$_','$_','$3'},[{'=<','$3',Now}],['$$']}])
+        ets:select_delete(TableName,Select)
     of
         _ ->
             ok
